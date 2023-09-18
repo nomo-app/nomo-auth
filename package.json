@@ -1,5 +1,5 @@
 {
-  "name": "nomo-auth-lib",
+  "name": "nomo-auth",
   "version": "1.0.1",
   "description": "Test API",
   "main": "dist/cjs/index.js",
