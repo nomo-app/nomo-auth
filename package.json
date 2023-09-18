@@ -8,7 +8,10 @@
     "dist"
   ],
   "types": "dist/index.d.ts",
-
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nomo-app/nomo-plugin-kit.git"
+  },
   "scripts": {
     "build": "rimraf ./build && tsc",
     "start": "npm run build && node build/index.js",
