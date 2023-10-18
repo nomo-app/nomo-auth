@@ -15,7 +15,6 @@ export type NomoHeaderData = {
 export function getNomoHeaderData(req: Request): NomoHeaderData {
 	const nomo_bearer_token: string | undefined = req.header('authorization') ?? req.header('Authorization');
 	const nomo_token: string | undefined = nomo_bearer_token?.slice(7);
-	if (!nomo_token) throw new NomoApiError(403, 'NOMO_AUTH_TOKEN_INVALID');
 
 	const nomo_header_data: NomoHeaderData = {
 		nomo_token: nomo_token,
@@ -37,6 +36,7 @@ export function getNomoHeaderData(req: Request): NomoHeaderData {
 
 export function validateNomoHeaders(req: Request): void {
 	const nomo_header_data: NomoHeaderData = getNomoHeaderData(req);
+	if (!nomo_header_data.nomo_token) throw new NomoApiError(403, 'NOMO_AUTH_TOKEN_INVALID');
 	if (!nomo_header_data.nomo_auth_version) new NomoApiError(403, 'NOMO_MISSING_AUTH_VERSION');
 	if (!nomo_header_data.nomo_token) new NomoApiError(403, 'NOMO_MISSING_AUTHORIZATION_TOKEN');
 	if (!nomo_header_data.nomo_sig) new NomoApiError(403, 'NOMO_MISSING_SIGNATURE');

@@ -25,11 +25,9 @@ export function createNomoToken(req: Request, nomo_config: NomoConfig): string {
 
 export function validateNomoToken(req: Request, nomo_config: NomoConfig): void {
 	const nomo_header_data = getNomoHeaderData(req);
+	if (!nomo_header_data.nomo_token) throw new NomoApiError(403, 'NOMO_AUTH_TOKEN_INVALID');
 
-	const token = nomo_header_data.nomo_token?.slice(7);
-	if (!token) throw new NomoApiError(403, 'NOMO_AUTH_TOKEN_INVALID');
-
-	const nomo_token = getNomoTokenData(token, nomo_config);
+	const nomo_token = getNomoTokenData(nomo_header_data.nomo_token, nomo_config);
 	if (!nomo_token) throw new NomoApiError(403, 'NOMO_AUTH_TOKEN_INVALID');
 
 	if (!nomo_token.timestamp || !nomo_token.nomo_auth_addr || !nomo_token.nonce) throw new NomoApiError(403, 'NOMO_AUTH_TOKEN_INVALID');
@@ -38,7 +36,7 @@ export function validateNomoToken(req: Request, nomo_config: NomoConfig): void {
 
 	if (nomo_header_data.nomo_auth_addr !== nomo_token.nomo_auth_addr) throw new NomoApiError(403, 'NOMO_INVALID_AUTH_ADDR');
 
-	const is_nomo_sig_verified = verifyNomoSignature(nomo_header_data.nomo_auth_addr, nomo_header_data.nomo_sig, token);
+	const is_nomo_sig_verified = verifyNomoSignature(nomo_header_data.nomo_auth_addr, nomo_header_data.nomo_sig, nomo_header_data.nomo_token);
 	if (!nomo_config.nomo_browser_dev_mode && !is_nomo_sig_verified) throw new NomoApiError(403, 'NOMO_INVALID_SIGNATURE');
 }
 
