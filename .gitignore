@@ -1,0 +1,10 @@
+/node_modules
+package-lock.json
+/.idea
+
+# dotenv environment variable files
+*.env
+
+# TypeScript
+build
+/test

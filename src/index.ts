@@ -1,2 +1,5 @@
-export {nomoMiddleware, getNomoHeaderData, getNomoToken} from './nomoMiddleware';
-export type {NomoResponse, NomoHeaderData, NomoConfig, NomoToken} from './nomoMiddleware';
+export { nomoMiddleware } from './nomoMiddleware';
+export { getNomoHeaderData } from './nomoHeaders';
+
+export type { NomoHeaderData } from './nomoHeaders';
+export type { NomoConfig } from './nomoConfig';
