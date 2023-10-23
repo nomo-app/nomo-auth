@@ -19,7 +19,10 @@
     "rollup:start": "npm run rollup:clean && rollup -c",
     "rollup:export": "npm run rollup:start && ./exportLibrary.sh localApplications.txt"
   },
-  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nomo-app/nomo-auth.git"
+  },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^23.0.2",
     "@rollup/plugin-json": "^6.0.0",
