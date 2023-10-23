@@ -15,8 +15,8 @@ npm install nomo-auth
 Here's an example of how to add the nomo-auth middleware to your Express application:
 
 ```typescript
-const express = require('express');
-const { nomoMiddleware } = require('nomo-auth');
+import express from 'express';
+import { nomoMiddleware } from 'nomo-auth';
 
 const app = express();
 
