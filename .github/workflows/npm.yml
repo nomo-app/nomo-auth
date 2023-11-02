@@ -1,0 +1,25 @@
+name: Node.js CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.17.1'
+    - name: Install dependencies and build nomo-auth
+      run: |
+        npm install
+        npm run dev:build
+        git diff --exit-code .
+    
