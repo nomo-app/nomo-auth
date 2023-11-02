@@ -20,6 +20,6 @@ jobs:
     - name: Install dependencies and build nomo-auth
       run: |
         npm install
-        npm run dev:build
+        npm run rollup:start
         git diff --exit-code .
     
