@@ -11,7 +11,7 @@ See the [open-source simulation](https://github.com/nomo-app/nomo-webon-kit/blob
 This simulation serves as a specification of Nomo-Auth.
 Nomo-Auth is a simple protocol, so the whole simulation is only a small amount of TypeScript-code.
 
-## Signature Verfification
+## Signature Verification
 
 `nomo-auth` offers two different types of address/signature-pairs: `nomo-auth-addr + nomo-sig` as well as `nomo-eth-addr + nomo-eth-sig`.
 To secure a backend, at least one of those address/signature-pairs must be verified.
