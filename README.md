@@ -11,6 +11,13 @@ See the [open-source simulation](https://github.com/nomo-app/nomo-webon-kit/blob
 This simulation serves as a specification of Nomo-Auth.
 Nomo-Auth is a simple protocol, so the whole simulation is only a small amount of TypeScript-code.
 
+## How to use
+
+In the frontend, we recommend using the function [nomoAuthHttp](https://github.com/nomo-app/nomo-webon-kit/blob/main/api-docs/modules.md#nomoauthhttp) from the nomo-webon-kit.
+nomoAuthHttp injects the needed HTTP-headers automatically and it retries requests upon 403-errors (according to the specification above).
+
+In the backend, we recommend learning how to verify signatures (see the sections below).
+
 ## Signature Verification
 
 `nomo-auth` offers two different types of address/signature-pairs: `nomo-auth-addr + nomo-sig` as well as `nomo-eth-addr + nomo-eth-sig`.
