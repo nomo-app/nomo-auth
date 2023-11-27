@@ -1,16 +1,52 @@
-# Overview
+# Nomo-Auth
 
-`nomo-auth` is an Express middleware designed to validate the headers and signature of NOMO App requests. It provides an extra layer of security to ensure that incoming requests are authorized and legitimate.
+`nomo-auth` is a protocol for authenticating WebOns, based on cryptographic signatures.
+With `nomo-auth`, WebOns can authenticate without any passwords or even without any user interaction at all.
 
-## Installation
+At its core, `nomo-auth` injects a few headers into HTTP-requests sent by a Nomo WebOn.
 
-To get started with `nomo-auth`, you can install it via npm:
+## Protocol Specification
+
+See the [open-source simulation](https://github.com/nomo-app/nomo-webon-kit/blob/main/nomo-webon-kit/src/nomo_auth.ts) of the Nomo-Auth protocol.
+This simulation serves as a specification of Nomo-Auth.
+Nomo-Auth is a simple protocol, so the whole simulation is only a small amount of TypeScript-code.
+
+## Signature Verfification
+
+`nomo-auth` offers two different types of address/signature-pairs: `nomo-auth-addr + nomo-sig` as well as `nomo-eth-addr + nomo-eth-sig`.
+To secure a backend, at least one of those address/signature-pairs must be verified.
+
+### nomo-auth-addr + nomo-sig
+
+`nomo-auth-addr` is a special address that is derived from the user's wallet and the target-domain of the HTTP-request.
+
+`nomo-sig` is an *“Eurocoin-message-signature"* that can be verified with packages like [bitcoinjs-message](https://www.npmjs.com/package/bitcoinjs-message).
+See the function [verifyNomoSignature](https://github.com/nomo-app/nomo-auth/blob/5c47fe3440952b1f613d2c1c594babfad4f4c99c/src/nomoToken.ts#L52C10-L52C29) as an example for verifying a `nomo-sig`.
+
+> :warning: `nomo-auth-addr` will change whenever the target-domain of your HTTP-requests changes! If you rely on `nomo-auth-addr` in a database, then you must never ever change the domain of your backend.
+
+### nomo-eth-addr + nomo-eth-sig
+
+`nomo-eth-addr` is the regular Ethereum/Smartchain-address of a Nomo user.
+
+`nomo-eth-sig` is an *"Ethereum-message-signature"* that can be verified with packages like ethers.js or web3.js.
+See the [ethSigDemo](https://github.com/nomo-app/nomo-webon-kit/blob/main/demo-webon/src/app/evm/eth_sig.ts) as an example for verifying a `nomo-eth-sig`.
+
+
+## npm package
+
+The `nomo-auth` npm package is an express.js-middleware for Nomo-Auth.
+Nevertheless, even if you do not use express.js, Nomo-Auth is simple enough to be integrated without any middleware with just a few lines of code.
+
+### Installation
+
+To use `nomo-auth` with express.js, you can install it via npm:
 
 ```bash
 npm install nomo-auth
 ```
 
-## Usage
+### Usage
 
 Here's an example of how to add the nomo-auth middleware to your Express application:
 
@@ -31,15 +67,15 @@ app.use(nomoMiddleware(config));
 
 In this example, you import the nomoMiddleware function and add it as middleware to your Express app. Replace the configuration values with the appropriate settings for your application.
 
-## Configuration Options
+### Configuration Options
 
 The nomoMiddleware function takes an options object with the following properties:
 
 - nomo_token_secret ( required ): The secret for the JSON Web Token (JWT) communication.
 - nomo_token_validity ( optional ): How long the token is valid (in seconds).
-- nomo_browser_dev_mode ( optional ): Activate this only in development mode if you are opening the plugin in your browser.
+- nomo_browser_dev_mode ( optional ): Activate this only in development mode if you are opening a WebOn in your browser.
 
-## NOMO Headers
+### Nomo Headers
 
 To retrieve these NOMO Headers, you can use the getNomoHeaderData function. This function takes an Express Request object as its parameter and returns an object containing the extracted NOMO Headers. Here's how to use it:
 ```typescript
@@ -56,4 +92,4 @@ app.get('/your-endpoint', (req, res) => {
 });
 ```
 
-If you need more information regarding NOMO Headers, please refer to the [NOMO Plugin Kit documentation](https://github.com/nomo-app/nomo-plugin-kit/blob/main/api-docs/modules.md).
+If you need more information regarding Nomo Headers, please refer to the [Nomo Auth simulation](https://github.com/nomo-app/nomo-webon-kit/blob/main/nomo-webon-kit/src/nomo_auth.ts).
