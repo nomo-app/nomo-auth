@@ -7,14 +7,16 @@ At its core, `nomo-auth` injects a few headers into HTTP-requests sent by a Nomo
 
 ## Protocol Specification
 
-See the [open-source simulation](https://github.com/nomo-app/nomo-webon-kit/blob/main/nomo-webon-kit/src/nomo_auth.ts) of the Nomo-Auth protocol.
-This simulation serves as a specification of Nomo-Auth.
-Nomo-Auth is a simple protocol, so the whole simulation is only a small amount of TypeScript-code.
+See the [browser implementation](https://github.com/nomo-app/nomo-webon-kit/blob/main/nomo-webon-kit/src/nomo_auth.ts) of the Nomo-Auth protocol.
+This implementation serves as a specification of Nomo-Auth.
+Nomo-Auth is a simple protocol, so the whole implementation is only a small amount of TypeScript-code.
 
 ## How to use
 
 In the frontend, we recommend using the function [nomoAuthHttp](https://github.com/nomo-app/nomo-webon-kit/blob/main/api-docs/modules.md#nomoauthhttp) from the nomo-webon-kit.
 nomoAuthHttp injects the needed HTTP-headers automatically and it retries requests upon 403-errors (according to the specification above).
+
+If this specific 403-flow does not fit your needs, you could roll a customized flow based on the function [nomoSignAuthMessage](https://github.com/nomo-app/nomo-webon-kit/blob/main/api-docs/modules.md#nomosignauthmessage).
 
 In the backend, we recommend learning how to verify signatures (see the sections below).
 
@@ -99,4 +101,4 @@ app.get('/your-endpoint', (req, res) => {
 });
 ```
 
-If you need more information regarding Nomo Headers, please refer to the [Nomo Auth simulation](https://github.com/nomo-app/nomo-webon-kit/blob/main/nomo-webon-kit/src/nomo_auth.ts).
+If you need more information regarding Nomo Headers, please refer to the [Nomo Auth browser implementation](https://github.com/nomo-app/nomo-webon-kit/blob/main/nomo-webon-kit/src/nomo_auth.ts).
