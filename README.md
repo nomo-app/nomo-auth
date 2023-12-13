@@ -13,8 +13,12 @@ Nomo-Auth is a simple protocol, so the whole implementation is only a small amou
 
 ## How to use
 
-In the frontend, we recommend using the function [nomoAuthHttp](https://github.com/nomo-app/nomo-webon-kit/blob/main/api-docs/modules.md#nomoauthhttp) from the nomo-webon-kit.
-nomoAuthHttp injects the needed HTTP-headers automatically and it retries requests upon 403-errors (according to the specification above).
+In the frontend, we recommend using one of the following functions from the nomo-webon-kit:
+
+- [nomoAuthHttp](https://github.com/nomo-app/nomo-webon-kit/blob/main/api-docs/modules.md#nomoauthhttp): Nomo-Auth via native code
+- [nomoAuthFetch](https://github.com/nomo-app/nomo-webon-kit/blob/main/api-docs/modules.md#nomoauthfetch): Nomo-Auth via JavaScript-fetch
+
+Those functions inject the needed HTTP-headers automatically and retry requests upon 403-errors (according to the specification above).
 
 If this specific 403-flow does not fit your needs, you could roll a customized flow based on the function [nomoSignAuthMessage](https://github.com/nomo-app/nomo-webon-kit/blob/main/api-docs/modules.md#nomosignauthmessage).
 
