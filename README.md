@@ -72,21 +72,15 @@ const app = express();
 const config = {
   nomo_token_secret: 'Your JWT token secret',
   nomo_token_validity: 'Token validity in seconds', // default 3h
-  nomo_browser_dev_mode: 'true or false', // default false
+  auth_addr_validation_disabled: 'true or false', // default false
+  webon_name_list: ['Your webon name'],
+  min_webon_version: '1.0.1' // Optional
 };
 
 app.use(nomoMiddleware(config));
 ```
 
 In this example, you import the nomoMiddleware function and add it as middleware to your Express app. Replace the configuration values with the appropriate settings for your application.
-
-### Configuration Options
-
-The nomoMiddleware function takes an options object with the following properties:
-
-- nomo_token_secret ( required ): The secret for the JSON Web Token (JWT) communication.
-- nomo_token_validity ( optional ): How long the token is valid (in seconds).
-- nomo_browser_dev_mode ( optional ): Activate this only in development mode if you are opening a WebOn in your browser.
 
 ### Nomo Headers
 
