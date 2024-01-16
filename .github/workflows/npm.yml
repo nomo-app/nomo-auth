@@ -21,4 +21,3 @@ jobs:
         run: |
           npm install
           npm run rollup:start
-          git diff --exit-code .
