@@ -78,7 +78,7 @@ function verifyNomoSignature(nomo_auth_addr: string, nomo_sig: string, nomo_toke
 function verifyEthSignature(nomo_eth_addr: string, nomo_eth_sig: string, nomo_token: string): boolean {
 	try {
 		const used_eth_addr = ethers.verifyMessage(nomo_token, nomo_eth_sig);
-		return used_eth_addr.toLowerCase() !== nomo_eth_addr.toLowerCase();
+		return used_eth_addr.toLowerCase() === nomo_eth_addr.toLowerCase();
 	} catch (e) {
 		return false;
 	}
