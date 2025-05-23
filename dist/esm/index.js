@@ -3829,20 +3829,45 @@ function verifyMessage(message, sig) {
     return recoverAddress(digest, sig);
 }
 
+function parseIpAddr(req) {
+    var _a, _b, _c, _d;
+    try {
+        const req1 = req;
+        const ip = req1.headers['cf-connecting-ip'] ||
+            req1.headers['vg-forwarded-for'] ||
+            req1.headers['x-forwarded-for'] ||
+            req1.headers['vg-shield-req-ip'] ||
+            ((_a = req1 === null || req1 === void 0 ? void 0 : req1.connection) === null || _a === void 0 ? void 0 : _a.remoteAddress) ||
+            ((_b = req1 === null || req1 === void 0 ? void 0 : req1.socket) === null || _b === void 0 ? void 0 : _b.remoteAddress) ||
+            ((_d = (_c = req1 === null || req1 === void 0 ? void 0 : req1.connection) === null || _c === void 0 ? void 0 : _c.socket) === null || _d === void 0 ? void 0 : _d.remoteAddress) ||
+            '';
+        return ip.split(',').pop();
+    }
+    catch (e) {
+        console.error(e);
+        return '';
+    }
+}
 function createNomoToken(req, nomo_config) {
     const { nomo_auth_addr, nomo_eth_addr } = getNomoHeaderData(req);
+    const ip_addr = parseIpAddr(req);
     const nonce = require$$5.randomBytes(15).toString('hex');
     const timestamp = moment().utc().unix();
-    const sign_data = { nomo_auth_addr, nomo_eth_addr, nonce, timestamp };
+    const sign_data = { nomo_auth_addr, nomo_eth_addr, nonce, timestamp, ip_addr };
     return jwt.sign(sign_data, nomo_config.nomo_token_secret);
 }
 function validateNomoToken(req, nomo_config) {
     const { nomo_token, nomo_auth_addr, nomo_sig, nomo_eth_addr, nomo_eth_sig, nomo_webon_name, nomo_webon_version } = getNomoHeaderData(req);
-    const { timestamp, nomo_auth_addr: nomo_token_auth_addr, nomo_eth_addr: nomo_token_eth_addr, nonce } = getNomoTokenData(nomo_token, nomo_config);
+    const { timestamp, nomo_auth_addr: nomo_token_auth_addr, nomo_eth_addr: nomo_token_eth_addr, nonce, ip_addr } = getNomoTokenData(nomo_token, nomo_config);
     if (!timestamp || !nomo_auth_addr || !nonce)
         throw new NomoApiError(403, 'NOMO_AUTH_TOKEN_INVALID');
+    if (timestamp > moment().utc().unix())
+        throw new NomoApiError(403, 'NOMO_AUTH_TOKEN_FROM_FUTURE');
     if (timestamp + nomo_config.nomo_token_validity < moment().utc().unix())
         throw new NomoApiError(403, 'NOMO_AUTH_TOKEN_EXPIRED');
+    const req_ip_addr = parseIpAddr(req);
+    if (req_ip_addr !== ip_addr)
+        throw new NomoApiError(403, 'NOMO_INVALID_IP_ADDRESS');
     // eth_addr signature validation
     if (nomo_eth_addr !== nomo_token_eth_addr)
         throw new NomoApiError(403, 'NOMO_INVALID_ETH_ADDR');
